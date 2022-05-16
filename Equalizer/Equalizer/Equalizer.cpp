@@ -997,7 +997,7 @@ MyFrame::MyFrame(wxFrame *frame, const wxString& title, const wxPoint& pos,
     fileMenu->Append(wxID_OPEN, "&Open...");
     
 	subMenu = new wxMenu;
-	fileMenu->AppendSubMenu(subMenu,"Open Recent", wxT("Description?"));
+	fileMenu->AppendSubMenu(subMenu,"Opened Recent", wxT("Description?"));
 	
 	subMenu->AppendRadioItem(OPEN_RECENT,"History Clear", wxT("Description?"));
 	
