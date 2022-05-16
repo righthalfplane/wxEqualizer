@@ -10,5 +10,5 @@
 
 ## Demo video
 
-- [wxEquilizer a 10 channel audio equalizer using wxWidgets.](https://youtu.be/wcsD3ahMplg)
+- [wxEqualizer a 10 channel audio equalizer using wxWidgets.](https://youtu.be/wcsD3ahMplg)
 
