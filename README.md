@@ -4,4 +4,6 @@
 
   wxEqualizer was written to test the wxWidgets library to see how difficult it was to use and to try to make a usable audio equalizer. There was a problem with the Gauge widget - it would only display correctly inside a size widget. This unleashed a long list of problems with trying to get the size widgets to work - wxFlexGridSizer could not handle the number of lines needed - wxBoxSizer does not position the widgets correctly - etc.. The final layout was about what was wanted, but it required hours of fooling around to get it. On the other hand, the wxFileConfig routines were amazing - they made it simple to save and restore information as the application was started and stopped. The equalizer channels were tested and verified to be correct using the tone test routines. Most equalizer programs have presets for various types of music and that would be easy to add - just tweeking the controls a little can really improve the sound.
   
+  Everything seems to be working and working well, but it needs some custom widgets for it to look pretty.
+  
   If anyone wants to improve the wxEqualizer - go for it, fork the program - if you have any questions - just leave them in the "issues" list.
