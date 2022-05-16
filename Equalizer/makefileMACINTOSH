@@ -1,0 +1,11 @@
+CXXFLAGS =  -std=c++11 -O2  `/usr/local/bin/wx-config --cxxflags` -Wall -DGL_SILENCE_DEPRECATION -Wno-return-type-c-linkage -Wno-deprecated-declarations -DMENU_SHIFT=5
+
+CCFILES= ./Equalizer/Equalizer.cpp ./Equalizer/FFT.cpp ./Equalizer/Poly.cpp.  ./Equalizer/Utilities.cpp
+ 
+CCOBJS = ./Equalizer/Equalizer.o ./Equalizer/FFT.o ./Equalizer/Poly.o   ./Equalizer/Utilities.o
+
+fireball:  ${COBJS} ${CCOBJS}
+	${CXX} ${CFLAGS} -o Equalizer.x ${COBJS} ${CCOBJS}   -lGLEW `/usr/local/bin/wx-config --cxxflags --libs --gl-libs` -lrtaudio -lsndfile -lliquid
+	rm ./Equalizer/Equalizer.o ./Equalizer/FFT.o ./Equalizer/Poly.o  ./Equalizer/Utilities.o
+
+
