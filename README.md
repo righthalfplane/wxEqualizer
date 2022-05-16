@@ -7,3 +7,8 @@
   Everything seems to be working and working well, but it needs some custom widgets for it to look pretty.
   
   If anyone wants to improve the wxEqualizer - go for it, fork the program - if you have any questions - just leave them in the "issues" list.
+
+## Demo video
+
+- [wxEquilizer a 10 channel audio equalizer using wxWidgets.](https://youtu.be/wcsD3ahMplg)
+
