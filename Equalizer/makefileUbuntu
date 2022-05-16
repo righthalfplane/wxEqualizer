@@ -5,7 +5,7 @@ CCFILES= ./Equalizer/Equalizer.cpp ./Equalizer/FFT.cpp ./Equalizer/Poly.cpp  ./E
 CCOBJS = ./Equalizer/Equalizer.o ./Equalizer/FFT.o ./Equalizer/Poly.o ./Equalizer/Utilities.o
 
 fireball:  ${COBJS} ${CCOBJS}
-	${CXX} ${CFLAGS} -o Equalizer.x ${COBJS} ${CCOBJS}  `/usr/local/bin/wx-config --cxxflags --libs --gl-libs` -lrtaudio -lsndfile -lliquid -lGL -lGLU
+	${CXX} ${CFLAGS} -o wxEqualizer.x ${COBJS} ${CCOBJS}  `/usr/local/bin/wx-config --cxxflags --libs --gl-libs` -lrtaudio -lsndfile -lliquid -lGL -lGLU
 	rm ./Equalizer/Equalizer.o ./Equalizer/FFT.cpp ./Equalizer/Poly.o  ./Equalizer/Utilities.o
 
 
