@@ -108,6 +108,138 @@ int sourceTone::doSource(short int *buffer,int frames)
 	return frames;
 }
 
+class sourceImpulse : public sourceBase{
+public:
+    virtual int doSource(short int *buffer,int frames);
+    virtual ~sourceImpulse(){}
+    int fft(float *data,int nn,int isign);
+    int d_nfft;
+    int d_nend;
+    int nrun;
+
+};
+
+int sourceImpulse::doSource(short int *buffer,int frames)
+{
+	float out[2*32768];
+
+	d_nfft=32768;
+	d_nend=0;
+	
+	int nout=d_nfft;
+		  
+      	      
+	int nw=0;
+	int nend=d_nend;
+	for(int n = 0; n < nout; n++)
+	 {
+		out[2*n]=0;
+		out[2*n+1]=0;
+		if(nw++ >= nend){
+			nw=0;
+			out[2*n]=1;
+			out[2*n+1]=1;
+		}
+	 }
+         
+	 fft((float *)out,d_nfft,-1);
+	 
+	 
+	double amin=1e33;
+	double amax=-1e33;
+		
+	for(int n=0;n<frames;++n){
+	    double v=out[2*n];
+	    if(v > amax)amax=v;
+	    if(v < amin)amin=v;
+		buffer[n]=(short int)v;
+	}
+
+	//printf("amin %g amax %g\n",amin,amax);
+	
+	return frames;
+}
+
+int sourceImpulse::fft(float *data,int nn,int isign)
+{
+	double twopi,tempr,tempi,wstpr,wstpi;
+	double wr,wi,theta,sinth,fni;
+	int i,j,n,m,mmax,istep;
+
+	  data -= 1;
+	  j=1;
+	  n=2*nn;
+	  twopi=8.*atan(1.);
+	   for(i=1;i<=n;i += 2){
+	   if(i-j >= 0)goto L200;
+	   tempr=data[j];
+	   tempi=data[j+1];
+	   data[j]=data[i];
+	   data[j+1]=data[i+1];
+	   data[i]=tempr;
+	   data[i+1]=tempi;
+L200:    m=n/2;
+L300:    if(j-m > 0)goto L400;
+		goto L500;
+L400:    j=j-m;
+	   m=m/2;
+	   if(m-2 >= 0)goto L300;
+L500:  j=j+m;
+	   }
+	  mmax=2;
+L600:   if(mmax-n >= 0)goto L1000;
+	  istep=2*mmax;
+	  theta=twopi/(double)(isign*mmax);
+	  sinth=sin(theta/2.);
+	  wstpr=-2.*sinth*sinth;
+	  wstpi=sin(theta);
+	  wr=1.;
+	  wi=0.;
+		for(m=1;m<=mmax;m+=2){
+			for( i=m;i<=n;i+=istep){
+				j=i+mmax;
+				tempr=wr*data[j]-wi*data[j+1];
+				tempi=wr*data[j+1]+wi*data[j];
+				data[j]=data[i]-tempr;
+				data[j+1]=data[i+1]-tempi;
+				data[i]=data[i]+tempr;
+				data[i+1]=data[i+1]+tempi;
+			}
+			tempr=wr;
+			wr=wr*wstpr-wi*wstpi+wr;
+			wi=wi*wstpr+tempr*wstpi+wi;
+		}
+	  mmax=istep;
+	  goto L600;
+L1000: 
+
+	if(isign > 0){
+		fni=2.0/(double)nn;
+	}else{
+		fni=0.5;
+	}
+	double amax=-1e33;
+	double amin=1e33;
+	for( i=1;i<=2*nn;++i){
+		data[i]=data[i]*fni;
+		double v=data[i];
+		if(v > amax)amax=v;
+		if(v < amin)amin=v;
+	}
+/*		
+	static int p=0;
+	
+	if(++p > 20){
+	   fprintf(stderr,"amin %g amax %g\n",amin,amax);
+	   p=0;
+	}
+*/		
+	
+	return 0;
+}
+
+
+
 class MyFrame;
 
 class outputBase{
@@ -198,6 +330,7 @@ public:
 	class sourceBase *source;
 	class sourceFile *sf;
   	class sourceTone *st;
+  	class sourceImpulse *si;
  	
 	class outputBase *output;
 	class outputFile *of;
@@ -980,6 +1113,10 @@ MyFrame::MyFrame(wxFrame *frame, const wxString& title, const wxPoint& pos,
  	st=new sourceTone;
  	
  	st->tone= new sTone(16000.0,48000);
+ 
+ 	si=new sourceImpulse;
+ 	
+ 	si->nrun=0;
  
  	source=sf;
  	

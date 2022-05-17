@@ -292,6 +292,8 @@ int Poly::forceCascadeRun(float *input,float *output,int npoint,int sum)
     if(fabs(amax) > vmax)vmax=fabs(amax);
     runningSum = 0.7*runningSum+0.3*vmax;
     
+   // printf("amin %g amax %g runningSum %g\n",amin,amax,runningSum);
+    
     return 0;
 
 }
